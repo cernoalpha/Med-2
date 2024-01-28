@@ -1,0 +1,140 @@
+{
+    "PatientInformation": {
+        "patientName": "",
+        "patientId": "",
+        "gender": "",
+        "address": "",
+        "contact": ""
+    },
+    
+    "Prescription": {
+        "prescriptionNumber": "",
+        "prescriberName": "",
+        "prescriptionDate": "",
+        "medications": [
+            {
+                "medicationName": "",
+                "dosage": "",
+                "quantity": "",
+                "unitPrice": "",
+                "totalPrice": ""
+            }
+        ]
+    },
+
+    "MedicalReport": {
+        "Hospital": "",
+        "Date": "",
+        "Gender": "",
+        "PatientName": "",
+        "Age": "",
+        "MedicalRecordNumber": "",
+        "Physician": "",
+        "LaboratoryTestsNames": [],
+        "ClinicalHistory": "",
+        "Analysis":""
+    },
+
+    "HospitalBill": {
+        "Hospital": "",
+        "Doctor_name": "",
+        "Date": "",
+        "Gender": "",
+        "Patient_name": "",
+        "Medications": [
+            {
+                "Name": "",
+                "Dose": "",
+                "Duration": ""
+            }
+        ]
+    },
+
+    "Insurance": {
+        "policyHolder": {
+            "policyHolderName": "",
+            "policyHolderId": "",
+            "dob": "",
+            "gender": "",
+            "contact": "",
+            "address": ""
+        },
+        "policy": {
+            "policyNumber": "",
+            "startDate": "",
+            "endDate": "",
+            "coverageType": "",
+            "coverageDetails": {
+                "inpatient": "",
+                "outpatient": "",
+                "prescriptionCoverage": ""
+            },
+            "deductible": "",
+            "coPay": {
+                "inpatient": "",
+                "outpatient": ""
+            },
+            "maxCoverageAmount": ""
+        },
+        "dependents": [
+            {
+                "dependentName": "",
+                "relation": "",
+                "dob": ""
+            }
+        ],
+        "insuranceProvider": {
+            "providerName": "",
+            "contact": "",
+            "address": ""
+        },
+        "services": [
+            {
+                "service": "",
+                "description": "",
+                "date": "",
+                "cptCode": "",
+                "charge": ""
+            }
+        ],
+        "charges": {
+            "total": "",
+            "insurancePayments": "",
+            "patientPayments": "",
+            "adjustments": ""
+        },
+        "provider": {
+            "name": "",
+            "address": "",
+            "contact": "",
+            "npi": ""
+        }
+    },
+
+    "PharmacyBill": {
+        "patient": {
+            "patientName": "",
+            "patientId": "",
+            "gender": "",
+            "address": "",
+            "contact": ""
+        },
+        "pharmacy": {
+            "pharmacyName": "",
+            "pharmacyId": "",
+            "address": "",
+            "contact": ""
+        },
+        "totalAmount": "",
+        "insuranceCoverage": {
+            "coveredAmount": "",
+            "patientResponsibility": ""
+        },
+        "payment": {
+            "paymentMethod": "",
+            "transactionId": "",
+            "paymentAmount": "",
+            "paymentDate": ""
+        }
+    }
+}
