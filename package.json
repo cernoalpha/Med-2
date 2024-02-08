@@ -19,6 +19,8 @@
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.0.3",
     "path": "^0.12.7",
-    "pdf2img-promises": "^0.7.3"
+    "pdf2img-promises": "^0.7.3",
+    "pdf2pic": "^3.1.1",
+    "sharp": "^0.33.2"
   }
 }

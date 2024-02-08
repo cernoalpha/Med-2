@@ -1,60 +1,46 @@
 // pdfHandler.js
 const fs = require('fs');
 const path = require('path');
-const Pdf2Img = require('pdf2img-promises');
-const { processImage } = require('./imageProcessor');
+const {fromBuffer} = require('pdf2pic');
+const { compressImages } = require('./compressImages')
 
 const processPDF = async (file) => {
     try {
-        const outputPath = path.join(__dirname, 'temp');
-        const pdfPath = path.join(outputPath, file.originalname);
+        const pdfBuffer = file.buffer;
 
+        const outputPath = path.join(__dirname, 'output');
         if (!fs.existsSync(outputPath)) {
             fs.mkdirSync(outputPath);
         }
-        fs.writeFileSync(pdfPath, file.buffer);
 
-        const fileName = path.parse(file.originalname).name;
-        const outputDir = path.join(__dirname, 'output');
+        const options = {
+            density: 600,           // dpi
+            quality: 70,            // quality of the image
+            outputFormat: 'png',    // output format
+            size: 1024,             // size in pixels
+        };
 
-        const converter = new Pdf2Img();
-
-        converter.on(fileName, (msg) => {
-            console.log('Received: ', msg);
+        const convert = fromBuffer(pdfBuffer, options);
+        const imageFiles = await convert.bulk(-1,{ responseType: "base64" });
+    
+        const compressPromises = imageFiles.map(async (imageInfo) => {
+            const base64String = imageInfo.base64;
+            const buffer = Buffer.from(base64String, 'base64');
+            if (buffer.length < 500 * 1024) {
+                return buffer;
+            } else {
+                return await compressImages(buffer);
+            }
         });
+        
 
-        converter.setOptions({
-            type: 'png',
-            size: 1024,
-            density: 600,
-            quality: 80,
-            outputdir: outputDir,
-            outputname: fileName,
-            page: null, 
-        });
+        const results = await Promise.all(compressPromises);
 
-        const info = await converter.convert(pdfPath);
-        fs.unlinkSync(pdfPath);
-
-        const imageProcessingPromises = info.map(async (imageInfo, pageIndex) => {
-            const imagePath = path.join(outputDir, `${fileName}-${pageIndex + 1}.png`);
-            const imageFile = {
-                buffer: fs.readFileSync(imagePath),
-                mimetype: 'image/png',
-                originalname: `${fileName}-${pageIndex + 1}.png`,
-            };
-
-            return processImage(imageFile);
-        });
-
-        const pdfProcessingResults = await Promise.all(imageProcessingPromises);
-
-        info.forEach((imageInfo, pageIndex) => {
-            const imagePath = path.join(outputDir, `${fileName}-${pageIndex + 1}.png`);
+        fs.readdirSync(outputPath).forEach((file) => {
+            const imagePath = path.join(outputPath, file);
             fs.unlinkSync(imagePath);
         });
-
-        return pdfProcessingResults;
+        return results;
 
     } catch (error) {
         return { success: false, error: error.message };
